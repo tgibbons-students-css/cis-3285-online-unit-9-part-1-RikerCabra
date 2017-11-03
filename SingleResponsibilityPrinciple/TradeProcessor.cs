@@ -24,6 +24,29 @@ namespace SingleResponsibilityPrinciple
             return tradeData;
         }
 
+        public IEnumerable<string> ReadURLTradeData()
+        {
+            string url = @"http://faculty.css.edu/tgibbons/trades4.txt";
+            List<string> data = new List<string>();
+            WebClient wClient = new WebClient();
+
+            using (var stream = wClient.OpenRead(url))
+            {
+                using (var reader = new StreamReader(stream))
+                {
+                    string line;
+                    while (!reader.EndOfStream)
+                    {
+                        line = reader.ReadLine();
+                        data.Add(line);
+                    }
+                }
+            }
+            
+
+            return data;
+        }
+
         private IEnumerable<TradeRecord> ParseTrades(IEnumerable<string> tradeData)
         {
             var trades = new List<TradeRecord>();
@@ -151,7 +174,6 @@ namespace SingleResponsibilityPrinciple
             var trades = ParseTrades(lines);
             StoreTrades(trades);
         }
-
 
     }
 }
